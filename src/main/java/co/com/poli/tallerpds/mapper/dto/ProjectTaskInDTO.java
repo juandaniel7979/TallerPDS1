@@ -1,4 +1,4 @@
-package co.com.poli.tallerpds.service.dto;
+package co.com.poli.tallerpds.mapper.dto;
 
 import co.com.poli.tallerpds.persistence.entity.Backlog;
 import co.com.poli.tallerpds.persistence.entity.Project;

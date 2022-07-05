@@ -7,7 +7,7 @@ import co.com.poli.tallerpds.persistence.entity.ProjectTaskStatus;
 import co.com.poli.tallerpds.persistence.repository.ProjectRepository;
 import co.com.poli.tallerpds.persistence.repository.ProjectTaskRepository;
 import co.com.poli.tallerpds.service.ProjectTaskService;
-import co.com.poli.tallerpds.service.dto.ProjectTaskInDTO;
+import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

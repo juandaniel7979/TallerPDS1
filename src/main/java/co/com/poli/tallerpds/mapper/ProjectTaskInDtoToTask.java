@@ -2,7 +2,7 @@ package co.com.poli.tallerpds.mapper;
 
 import co.com.poli.tallerpds.persistence.entity.ProjectTask;
 import co.com.poli.tallerpds.persistence.entity.ProjectTaskStatus;
-import co.com.poli.tallerpds.service.dto.ProjectTaskInDTO;
+import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -14,17 +14,17 @@ public class ProjectTaskInDtoToTask implements IMapper<ProjectTaskInDTO, Project
 
     @Override
     public ProjectTask map(ProjectTaskInDTO in) {
-        ProjectTask ProjectTask = new ProjectTask();
-        ProjectTask.setName(in.getName());
-        ProjectTask.setSummary(in.getSummary());
-        ProjectTask.setAcceptanceCriteria(in.getAcceptanceCriteria());
-        ProjectTask.setStatus(ProjectTaskStatus.NotStarted.toString());
-        ProjectTask.setPriority(in.getPriority());
-        ProjectTask.setHours(in.getHours());
-        ProjectTask.setStartDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
-//        ProjectTask.setEndDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
-        ProjectTask.setProjectIdentifier(in.getProjectIdentifier());
-        ProjectTask.setBacklog(in.getBacklog());
-        return ProjectTask;
+        ProjectTask projectTask = new ProjectTask();
+        projectTask.setName(in.getName());
+        projectTask.setSummary(in.getSummary());
+        projectTask.setAcceptanceCriteria(in.getAcceptanceCriteria());
+        projectTask.setStatus(ProjectTaskStatus.NotStarted.toString());
+        projectTask.setPriority(in.getPriority());
+        projectTask.setHours(in.getHours());
+        projectTask.setStartDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+//        projectTask.setEndDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+        projectTask.setProjectIdentifier(in.getProjectIdentifier());
+        projectTask.setBacklog(in.getBacklog());
+        return projectTask;
     }
 }

@@ -1,5 +1,6 @@
 package co.com.poli.tallerpds.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,8 +30,10 @@ public class Project {
     @Column (name = "end_date")
     private Date endDate;
 
-    @OneToOne(mappedBy = "project", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-//    @JoinColumn(name = "backlog_id", referencedColumnName = "id")
+//    @OneToOne(mappedBy = "project", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_backlog", referencedColumnName = "project_identifier")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Backlog backlog;
 
 //    @Override

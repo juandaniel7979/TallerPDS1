@@ -1,6 +1,9 @@
 package co.com.poli.tallerpds.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,7 +44,9 @@ public class ProjectTask {
 
 //    @Column(name = "backlog")
     @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "backlog_id",referencedColumnName = "project_identifier")
+    @JoinColumn(name = "backlog_id")
+    @JsonIgnore
+//    @JsonBackReference
     private Backlog backlog;
 
 

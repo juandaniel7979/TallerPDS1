@@ -2,9 +2,7 @@ package co.com.poli.tallerpds.controller;
 
 import co.com.poli.tallerpds.helpers.Response;
 import co.com.poli.tallerpds.helpers.ResponseBuild;
-import co.com.poli.tallerpds.persistence.entity.Backlog;
-import co.com.poli.tallerpds.persistence.entity.ProjectTask;
-import co.com.poli.tallerpds.service.dto.ProjectTaskInDTO;
+import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
 import co.com.poli.tallerpds.service.impl.ProjectTaskImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

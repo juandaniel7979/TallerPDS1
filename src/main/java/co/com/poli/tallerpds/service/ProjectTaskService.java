@@ -1,7 +1,7 @@
 package co.com.poli.tallerpds.service;
 
 import co.com.poli.tallerpds.persistence.entity.ProjectTask;
-import co.com.poli.tallerpds.service.dto.ProjectTaskInDTO;
+import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
