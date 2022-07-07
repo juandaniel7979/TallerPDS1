@@ -2,28 +2,37 @@ package co.com.poli.tallerpds.helpers;
 
 import org.springframework.stereotype.Component;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @Component
 public class ResponseBuild {
 
-    public Response success() {
-        return Response.builder()
-                .data(OK)
-                .code(OK.value()).build();
-    }
-
     public Response success(Object data) {
         return Response.builder()
+                .code(CREATED.value())
                 .data(data)
-                .code(OK.value()).build();
+                .build();
     }
 
-    public Response failed(Object data) {
+    public Response successFind(Object data) {
         return Response.builder()
+                .code(OK.value())
                 .data(data)
-                .code(INTERNAL_SERVER_ERROR.value()).build();
+                .build();
+    }
+
+    public Response failed(Object data){
+        return Response.builder()
+                .code(BAD_REQUEST.value())
+                .data(data)
+                .build();
+    }
+
+    public Response failedNotFound(Object data){
+        return Response.builder()
+                .code(NOT_FOUND.value())
+                .data(data)
+                .build();
     }
 
 }

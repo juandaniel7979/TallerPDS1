@@ -1,6 +1,7 @@
 package co.com.poli.tallerpds.persistence.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -24,14 +25,15 @@ public class Backlog {
     @Column(name = "project_identifier",nullable = false)
     private String ProjectIdentifier;
 
-//    @Column(name = projc
-    @OneToOne(mappedBy = "backlog",cascade = CascadeType.ALL)
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    @JoinColumn(name = "id_project", referencedColumnName = "project_identifier")
+//    @OneToOne(mappedBy = "backlog",cascade = CascadeType.ALL)
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "backlog",fetch = FetchType.LAZY,cascade = {CascadeType.ALL})
+    @OneToMany(mappedBy = "backlog", cascade = CascadeType.PERSIST)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private List<ProjectTask> projectTask;
 
 

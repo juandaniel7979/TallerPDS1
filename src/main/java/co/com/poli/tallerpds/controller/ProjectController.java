@@ -8,10 +8,7 @@ import co.com.poli.tallerpds.service.impl.ProjectServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -53,4 +50,15 @@ public class ProjectController {
                 }).collect(Collectors.toList());
         return errors;
     }
+
+
+    @GetMapping
+    private Response findAll(){
+        List<Project> projects = projectServices.findAll();
+        if(projects.isEmpty()){
+            return builder.failedNotFound("Projects is empty");
+        }
+        return builder.successFind(projects);
+    }
+
 }

@@ -8,20 +8,18 @@ import co.com.poli.tallerpds.persistence.repository.ProjectRepository;
 import co.com.poli.tallerpds.persistence.repository.ProjectTaskRepository;
 import co.com.poli.tallerpds.service.ProjectTaskService;
 import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@RequiredArgsConstructor
 @Service
 public class ProjectTaskImpl implements ProjectTaskService {
 
-    @Autowired
-    private ProjectTaskRepository projectTaskRepository;
-
-    @Autowired
-    private ProjectRepository projectRepository;
-    private ProjectTaskInDtoToTask mapper;
+    private final ProjectTaskRepository projectTaskRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectTaskInDtoToTask mapper;
 
 //    @Override
 //    public ProjectTask create(ProjectTask projectTask){
@@ -31,8 +29,16 @@ public class ProjectTaskImpl implements ProjectTaskService {
 //
     @Override
     public ProjectTask create(ProjectTaskInDTO projectTaskInDTO){
+
+        try{
         ProjectTask projectTask = mapper.map(projectTaskInDTO);
+            System.out.println("Se transformó el task");
         return projectTaskRepository.save(projectTask);
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        System.out.println("Vacio");
+        return null;
     }
     @Override
     public List<ProjectTask> findByProjectIdentifier(String projectIdentifier){

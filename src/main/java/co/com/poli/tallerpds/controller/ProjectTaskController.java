@@ -2,15 +2,14 @@ package co.com.poli.tallerpds.controller;
 
 import co.com.poli.tallerpds.helpers.Response;
 import co.com.poli.tallerpds.helpers.ResponseBuild;
+import co.com.poli.tallerpds.mapper.dto.ProjectInDTO;
 import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
+import co.com.poli.tallerpds.persistence.entity.ProjectTask;
 import co.com.poli.tallerpds.service.impl.ProjectTaskImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -27,15 +26,38 @@ public class ProjectTaskController {
     private ProjectTaskImpl projectTaskServices;
     private final ResponseBuild builder;
 
+
     @PostMapping
-    private Response create(@Valid @RequestBody ProjectTaskInDTO projectTaskInDTO, BindingResult result){
+    private Response create(@Valid @RequestBody ProjectTaskInDTO projectInDTO, BindingResult result){
         if(result.hasErrors()){
             return builder.failed(formatMessage(result));
         }
-        projectTaskServices.create(projectTaskInDTO);
-        return builder.success(projectTaskInDTO);
+        projectTaskServices.create(projectInDTO);
+        return builder.success(projectInDTO);
     }
-    private List<Map<String, String>> formatMessage(BindingResult result) {
+    @GetMapping("/project/{projectIdentifier}")
+    private Response findByProjectdentifier(@PathVariable("projectIdentifier") String projectIdentifier) {
+        List<ProjectTask> projectTasks = projectTaskServices.findByProjectIdentifier(projectIdentifier);
+        return builder.successFind(projectTasks);
+    }
+
+    @GetMapping("/hours/project/{projectIdentifier}")
+    private Response findByProjectIdentifierHours(@PathVariable("projectIdentifier") String projectIdentifier){
+        double projectTask = projectTaskServices.findByProjectIdentifierHours(projectIdentifier);
+        return builder.successFind(projectTask);
+    }
+    @GetMapping("/hours/project{projectIdentifier}/{status}")
+    private Response findByProjectIdentifierHoursDeleted(@PathVariable("projectIdentifier")String pojectIdentifier, @PathVariable("status") String status){
+        double projectTask = projectTaskServices.findByProjectIdentifierHoursDeleted(pojectIdentifier, status);
+        return builder.successFind(projectTask);
+    }
+
+    @DeleteMapping("/{idTask}/{projectIdentifier}")
+    public Response deleteTask(@PathVariable("idTask") Long idTask, @PathVariable("projectIdentifier") String projectIdentifier){
+        return builder.successFind(projectTaskServices.deleteIdAndProjectIdentifier(idTask, projectIdentifier));
+    }
+
+    private List<Map<String, String>> formatMessage(BindingResult result){
         List<Map<String, String>> errors = result.getFieldErrors().stream()
                 .map(err -> {
                     Map<String, String> error = new HashMap<>();

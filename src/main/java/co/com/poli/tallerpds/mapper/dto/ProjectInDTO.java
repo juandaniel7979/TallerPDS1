@@ -35,7 +35,6 @@ public class ProjectInDTO {
     @JsonIgnore
     private Date endDate;
     @JsonIgnore
-    @JsonIgnoreProperties
     private Backlog backlog;
 
 }

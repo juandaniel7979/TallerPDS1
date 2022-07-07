@@ -21,7 +21,7 @@ public class ProjectTaskInDtoToTask implements IMapper<ProjectTaskInDTO, Project
         projectTask.setStatus(ProjectTaskStatus.NotStarted.toString());
         projectTask.setPriority(in.getPriority());
         projectTask.setHours(in.getHours());
-        projectTask.setStartDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
+        projectTask.setStartDate(new Date(1999-11-10));
 //        projectTask.setEndDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
         projectTask.setProjectIdentifier(in.getProjectIdentifier());
         projectTask.setBacklog(in.getBacklog());
