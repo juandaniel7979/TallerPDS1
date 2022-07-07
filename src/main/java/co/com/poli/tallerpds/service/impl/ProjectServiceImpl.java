@@ -8,11 +8,12 @@ import co.com.poli.tallerpds.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
@@ -41,5 +42,12 @@ public class ProjectServiceImpl implements ProjectService {
     public List<Project> findAll(){
         return projectRepository.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Project findById(Long id) {
+        return projectRepository.findById(id).orElse(null) ;
+    }
+
 
 }

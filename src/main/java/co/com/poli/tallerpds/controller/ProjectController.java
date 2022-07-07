@@ -61,4 +61,8 @@ public class ProjectController {
         return builder.successFind(projects);
     }
 
+
+    public Project findById(Long id) {
+        return projectServices.findById(id);
+    }
 }

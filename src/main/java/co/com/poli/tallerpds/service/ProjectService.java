@@ -11,4 +11,5 @@ public interface ProjectService {
 //    Project create(Project project);
 
     List<Project> findAll();
+    Project findById(Long id);
 }
