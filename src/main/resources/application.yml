@@ -1,12 +1,17 @@
-spring:
-    application:
-        name: ProjectTask
-    profile:
-        active: prod
-    jackson:
-        serialization:
-            fail-on-empty-beans: false
 server:
     servlet:
         context-path: /projectTasks/v1
     port: 9082
+spring:
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://ec2-44-198-82-71.compute-1.amazonaws.com:5432/d6qpvcs5mca8p0
+        username: hvzonwddhjntql
+        password: cecd717b7713f7907086b1f732139dacf00ae2a87bc6708a4c44414a32b9b5c2
+        sql:
+            init:
+                plataform: postgres
+    jpa:
+        hibernate:
+            ddl-auto: create-drop
+        generate-ddl: true

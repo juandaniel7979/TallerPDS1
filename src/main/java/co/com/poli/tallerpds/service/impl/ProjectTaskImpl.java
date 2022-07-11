@@ -52,7 +52,7 @@ public class ProjectTaskImpl implements ProjectTaskService {
         return null;
     }
     @Override
-    public double findByProjectIdentifierHours(String projectIdentifier){
+    public double findByProjectIdentifierHours (String projectIdentifier){
         List<ProjectTask> taskList = findByProjectIdentifier(projectIdentifier);
         double hours = 0;
 
