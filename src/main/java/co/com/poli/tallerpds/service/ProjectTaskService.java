@@ -11,8 +11,10 @@ public interface ProjectTaskService {
 //    ProjectTask create(ProjectTask projectTask);
     ProjectTask create(@RequestBody ProjectTaskInDTO projectTaskInDTO);
 
-    List<ProjectTask> findByProjectIdentifier(String projectIdentifier);
+//    List<ProjectTask> findByProjectIdentifier(String projectIdentifier);
+    List<ProjectTask> viewAllTaskProject(String projectIdentifier);
 
+    List<ProjectTask> findAll();
     double findByProjectIdentifierHours(String projectIdentifier);
 
     double findByProjectIdentifierHoursDeleted(String projectIdentifier, String status);

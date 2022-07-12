@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -20,12 +19,14 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table (name = "project_tasks")
-
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class ProjectTask {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @NotBlank(message = "Este campo no puede estar en blanco")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
     @Column(name = "id")
     private Long id;
     @NotBlank(message = "Este campo no puede estar en blanco")
@@ -34,12 +35,17 @@ public class ProjectTask {
     @NotBlank(message = "Este campo no puede estar en blanco")
     @Column(name = "summary")
     private String summary;
+    @NotBlank(message = "Este campo no puede estar en blanco")
+    @Column(name = "project_identifier")
+    private String projectIdentifier;
     @Column(name = "acceptance_criteria")
     private String acceptanceCriteria;
+    @NotBlank(message = "Este campo no puede estar en blanco")
     @Column(name = "status")
     private String status;
 
-    @Size(min = 1,max = 5)
+    @Range(min = 1,max = 5, message = "El campo acepta un rango de 1 a 5")
+    @Min(value = 0L, message = "El valor debe ser positivo")
     @Column(name = "priority")
     private int priority;
     @Range(min = 1,max = 8, message = "El campo acepta un rango de 1 a 8")
@@ -52,8 +58,7 @@ public class ProjectTask {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     private Date endDate;
-    @Column(name = "project_identifier")
-    private String projectIdentifier;
+
 
 //    @Column(name = "backlog")
     @JsonBackReference

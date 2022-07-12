@@ -11,12 +11,17 @@ import co.com.poli.tallerpds.mapper.dto.ProjectTaskInDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 @RequiredArgsConstructor
+@CrossOrigin
 @Service
 public class ProjectTaskImpl implements ProjectTaskService {
 
+    @Autowired
     private final ProjectTaskRepository projectTaskRepository;
     private final ProjectRepository projectRepository;
     private final ProjectTaskInDtoToTask mapper;
@@ -28,32 +33,51 @@ public class ProjectTaskImpl implements ProjectTaskService {
 //    }
 //
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ProjectTask create(ProjectTaskInDTO projectTaskInDTO){
 
         try{
         ProjectTask projectTask = mapper.map(projectTaskInDTO);
             System.out.println("Se transformó el task");
-        return projectTaskRepository.save(projectTask);
+            if(!verificarStatus(projectTask.getStatus())){
+                return projectTaskRepository.save(projectTask);
+            }
+
         }catch (Exception e){
             System.out.println(e);
+//            return null;
         }
-        System.out.println("Vacio");
+        System.out.println("Se salió y retorna null");
         return null;
     }
-    @Override
-    public List<ProjectTask> findByProjectIdentifier(String projectIdentifier){
-        List<Project> projects = projectRepository.findAll();
-        for (int i = 0; i < projects.size(); i++) {
-            if (projects.get(i).getProjectIdentifier().equals(projectIdentifier)) {
-                return projects.get(i).getBacklog().getProjectTask();
-            }
-        }
+//    @Override
+//    public List<ProjectTask> findByProjectIdentifier(String projectIdentifier){
+//        List<ProjectTask> projects = projectTaskRepository.findAll();
+//        for (int i = 0; i < projects.size(); i++) {
+//            if (projects.get(i).getProjectIdentifier().equals(projectIdentifier)) {
+//                return projects.get(i).getBacklog().getProjectTask();
+//            }
+//        }
+//
+//        return null;
+//    }
 
-        return null;
-    }
     @Override
+    @Transactional(readOnly = true)
+    public List<ProjectTask> viewAllTaskProject(String projectIdentifier) {
+        return projectTaskRepository.findByProjectIdentifier(projectIdentifier);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ProjectTask> findAll() {
+        return projectTaskRepository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public double findByProjectIdentifierHours (String projectIdentifier){
-        List<ProjectTask> taskList = findByProjectIdentifier(projectIdentifier);
+        List<ProjectTask> taskList = projectTaskRepository.findByProjectIdentifier(projectIdentifier);
         double hours = 0;
 
         for(int i = 0; i < taskList.size(); i++) {
@@ -65,8 +89,9 @@ public class ProjectTaskImpl implements ProjectTaskService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public double findByProjectIdentifierHoursDeleted(String projectIdentifier, String status){
-        List<ProjectTask> projectTaskList = findByProjectIdentifier(projectIdentifier);
+        List<ProjectTask> projectTaskList = projectTaskRepository.findByProjectIdentifier(projectIdentifier);
 
         double hours = 0;
 
@@ -79,8 +104,9 @@ public class ProjectTaskImpl implements ProjectTaskService {
         return hours;
     }
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ProjectTask deleteIdAndProjectIdentifier(Long idTask, String projectIdentifier){
-        List<ProjectTask> projectTaskList = findByProjectIdentifier(projectIdentifier);
+        List<ProjectTask> projectTaskList = projectTaskRepository.findByProjectIdentifier(projectIdentifier);
 
         for (int i = 0; i < projectTaskList.size(); i++){
             if(projectTaskList.get(i).getId() == idTask){
@@ -90,5 +116,13 @@ public class ProjectTaskImpl implements ProjectTaskService {
             }
         }
         return null;
+    }
+
+    private boolean verificarStatus(String nameStatus) {
+        if(nameStatus != "Not Started" || nameStatus != "In progress" || nameStatus != "completed" || nameStatus != "deleted") {
+            return false;
+        }else {
+            return true;
+        }
     }
 }

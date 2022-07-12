@@ -32,7 +32,8 @@ public class ProjectTaskInDTO {
     private String projectIdentifier;
     @JsonIgnore
     private String acceptanceCriteria;
-    @JsonIgnore
+//    @JsonIgnore
+    @NotBlank(message = "Este campo no puede estar en blanco")
     private String status;
 //    @Size(min = 1,max = 5)
     @Range(min = 1,max = 5, message = "El campo acepta un rango de 1 a 5")
