@@ -41,7 +41,7 @@ public class ProjectTaskImpl implements ProjectTaskService {
         try{
         ProjectTask projectTask = mapper.map(projectTaskInDTO);
             System.out.println("Se transformó el task");
-            if(!gverificarStatus(projectTask.getStatus())){
+            if(!verificarStatus(projectTask.getStatus())){
                 return projectTaskRepository.save(projectTask);
             }
 
