@@ -41,7 +41,7 @@ public class ProjectTaskImpl implements ProjectTaskService {
         try{
         ProjectTask projectTask = mapper.map(projectTaskInDTO);
             System.out.println("Se transformó el task");
-            if(!verificarStatus(projectTask.getStatus())){
+            if(ValidarStatus(projectTask.getStatus())){
                 return projectTaskRepository.save(projectTask);
             }
 
@@ -133,11 +133,11 @@ public class ProjectTaskImpl implements ProjectTaskService {
         }
     }
 
-    private boolean verificarStatus(String nameStatus) {
-        if(nameStatus != "Not Started" || nameStatus != "In progress" || nameStatus != "completed" || nameStatus != "deleted") {
-            return false;
-        }else {
+    private boolean ValidarStatus(String nameStatus) {
+        if(nameStatus.equals("Not started") || nameStatus.equals("In progress") || nameStatus.equals("completed") || nameStatus.equals("deleted")) {
             return true;
+        }else {
+            return false;
         }
     }
 }
