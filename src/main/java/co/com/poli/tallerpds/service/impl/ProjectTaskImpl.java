@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @CrossOrigin
 @Service
@@ -39,7 +41,7 @@ public class ProjectTaskImpl implements ProjectTaskService {
         try{
         ProjectTask projectTask = mapper.map(projectTaskInDTO);
             System.out.println("Se transformó el task");
-            if(!verificarStatus(projectTask.getStatus())){
+            if(!gverificarStatus(projectTask.getStatus())){
                 return projectTaskRepository.save(projectTask);
             }
 
@@ -50,17 +52,17 @@ public class ProjectTaskImpl implements ProjectTaskService {
         System.out.println("Se salió y retorna null");
         return null;
     }
-//    @Override
-//    public List<ProjectTask> findByProjectIdentifier(String projectIdentifier){
-//        List<ProjectTask> projects = projectTaskRepository.findAll();
-//        for (int i = 0; i < projects.size(); i++) {
-//            if (projects.get(i).getProjectIdentifier().equals(projectIdentifier)) {
-//                return projects.get(i).getBacklog().getProjectTask();
-//            }
-//        }
-//
-//        return null;
-//    }
+    @Override
+    public List<ProjectTask> findByProjectIdentifier(String projectIdentifier){
+        List<ProjectTask> projects = projectTaskRepository.findAll();
+        for (int i = 0; i < projects.size(); i++) {
+            if (projects.get(i).getProjectIdentifier().equals(projectIdentifier)) {
+                return projects.get(i).getBacklog().getProjectTask();
+            }
+        }
+
+        return null;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -116,6 +118,19 @@ public class ProjectTaskImpl implements ProjectTaskService {
             }
         }
         return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean changeStatusTask(Long idTask,String projectIdentifier) {
+        Optional<ProjectTask> borradoLogico = projectTaskRepository.findById(idTask);
+
+        if(borradoLogico.isPresent() && borradoLogico.get().getProjectIdentifier().equals(projectIdentifier)) {
+            borradoLogico.get().setStatus("deleted");
+            return true;
+        }else {
+            return false;
+        }
     }
 
     private boolean verificarStatus(String nameStatus) {

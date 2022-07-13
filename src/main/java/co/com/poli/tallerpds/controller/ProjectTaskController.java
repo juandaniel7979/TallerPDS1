@@ -78,16 +78,16 @@ public class ProjectTaskController {
         }
         return builder.failedNotFound("El projectIdentifier no coincide");
     }
-//    @GetMapping("/project/{projectIdentifier}")
-//    private Response findByProjectdentifier(@PathVariable("projectIdentifier") String projectId) {
-//        List<ProjectTask> projectTasks = projectTaskServices.findByProjectIdentifier(projectId);
-//        return builder.successFind(projectTasks);
-//    }
-
-    @GetMapping("/identifier/{projectIdentifier}")
-    public List<ProjectTask> findAllProjectIdentifier(@PathVariable("projectIdentifier") String project){
-        return projectTaskRepository.findByProjectIdentifier(project);
+    @GetMapping("/project/{projectIdentifier}")
+    private Response findByProjectdentifier(@PathVariable("projectIdentifier") String projectId) {
+        List<ProjectTask> projectTasks = projectTaskServices.findByProjectIdentifier(projectId);
+        return builder.successFind(projectTasks);
     }
+
+//    @GetMapping("/identifier/{projectIdentifier}")
+//    public List<ProjectTask> findAllProjectIdentifier(@PathVariable("projectIdentifier") String project){
+//        return projectTaskRepository.findByProjectIdentifier(project);
+//    }
 
     @GetMapping("/hours/project/{projectIdentifier}")
     private Response findByProjectIdentifierHours(@PathVariable("projectIdentifier") String projectIdentifier){
@@ -114,4 +114,16 @@ public class ProjectTaskController {
                 }).collect(Collectors.toList());
         return errors;
     }
+
+
+    @PutMapping("/{idtask}/{projectIdentifier}")
+    public Response changeStatusTask(@PathVariable("idtask") Long idTask, @PathVariable("projectIdentifier") String projectIdentifier) {
+        boolean flag = projectTaskServices.changeStatusTask(idTask, projectIdentifier);
+        if(flag) {
+            return builder.success("Se logró actualizar el estado de la tarea");
+        }else {
+            return builder.failedNotFound("No se logró actualizar el estado, validar si la tarea existe");
+        }
+    }
+
 }
